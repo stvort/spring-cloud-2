@@ -1,0 +1,65 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: quotes-service
+
+  config:
+    import: "optional:consul:"
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+
+      discovery:
+        instanceId: ${spring.application.name}:${random.value}
+
+      config:
+        enabled: true
+        watch:
+          enabled: false
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+
+  sql:
+    init:
+      mode: always
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
+
+  zipkin:
+    baseUrl: http://localhost:9411
+
+logging:
+  level:
+    ROOT: INFO
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+  tracing:
+    sampling:
+      probability: 1
+
+quotes:
+  prefix: "Кто-то сказал: "

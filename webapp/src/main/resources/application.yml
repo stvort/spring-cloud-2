@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: quotes-web-app
+  profiles:
+    active: p1-zipkin, p2-resilience4j
+  config:
+    import: "optional:consul:"
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+
+      config:
+        enabled: true
+        watch:
+          enabled: false
+
+      discovery:
+        instanceId: ${spring.application.name}:${random.value}
+        enabled: true
+  cache:
+    cache-names: randomQuote
+    caffeine:
+      spec: expireAfterAccess=30s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+        "[resilience4j.circuitbreaker.calls]": true
+
+app:
+  pageTitle: "Цитата на день"
+
+
+

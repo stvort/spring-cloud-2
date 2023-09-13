@@ -1,0 +1,18 @@
+global:
+  scrape_interval:     2s
+
+  external_labels:
+    monitor: 'cloud-monitor'
+
+scrape_configs:
+  - job_name: 'quotes-web-app'
+    scrape_interval: 5s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+
+  - job_name: 'quotes-service'
+    scrape_interval: 5s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8081']
