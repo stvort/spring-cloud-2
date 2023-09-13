@@ -27,14 +27,16 @@ public class QuoteServiceImpl implements QuoteService {
     //@Bulkhead(name = "randomQuoteApi", fallbackMethod = "findInCache")
     //@RateLimiter(name = "randomQuoteApi", fallbackMethod = "findInCache")
     //@Retry(name = "randomQuoteApi", fallbackMethod = "findInCache")
-    @CircuitBreaker(name = "randomQuoteApi", fallbackMethod = "findInCache")
+    //@CircuitBreaker(name = "randomQuoteApi", fallbackMethod = "findInCache")
     @Override
     public QuoteDto findRandom() {
         log.info("findRandom. Thread: {}", Thread.currentThread().getName());
+/*
 
         if (dataExistsInCache()) {
             throw new RandomQuoteApiException("API REQUEST FAILED!!!!!");
         }
+*/
 
         return repository.randomQuote();
     }

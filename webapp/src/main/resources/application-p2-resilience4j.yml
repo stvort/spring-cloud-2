@@ -6,14 +6,13 @@ resilience4j:
     configs:
       default:
         register-health-indicator: true
-        wait-duration-in-open-state: 30s
-        permitted-number-of-calls-in-half-open-state: 3
         sliding-window-type: count-based
         sliding-window-size: 5
-        minimum-number-of-calls: 5
         slow-call-duration-threshold: 10s
         slow-call-rate-threshold: 60
         failure-rate-threshold: 60
+        wait-duration-in-open-state: 30s
+        permitted-number-of-calls-in-half-open-state: 3
 
     instances:
       randomQuoteApi:
@@ -46,7 +45,7 @@ resilience4j:
       default:
         limit-for-period: 1 # Количество разрешенных вызовов за период
         limit-refresh-period: 10s # Период
-        timeout-duration: 1ms # Ожидание получения права на вызов
+        timeout-duration: 0ms # Ожидание получения права на вызов
       instances:
         randomQuoteApi:
           baseConfig: default
